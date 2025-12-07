@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  # Konfigurasi Dask Scheduler
+  scheduler:
+    image: daskdev/dask:latest
+    hostname: dask-scheduler
+    ports:
+      # PENTING: Port Host Kustom Baru
+      - "9086:8786" # Port Komunikasi Dask (Client & Worker)
+      - "9087:8787" # Port Dashboard Web
+    command: ["dask", "scheduler"]
+    networks:
+      - dask-net
+
+  # Konfigurasi Dask Workers
+  worker:
+    image: daskdev/dask:latest
+    # Worker tetap terhubung ke hostname 'dask-scheduler' di port internal 8786
+    command: ["dask", "worker", "tcp://dask-scheduler:8786"] 
+    deploy:
+      replicas: 3 # Jumlah Worker
+    depends_on:
+      - scheduler
+    networks:
+      - dask-net
+
+networks:
+  dask-net:
+    # Jaringan kustom untuk koneksi internal
