@@ -1,0 +1,64 @@
+apriansyah@fedora:~/kuliah/Semester 3/Komputasi Paralel dan Terdistribusi/Praktikum/Praktikum12$ docker compose run --rm -v "$(pwd)":/app dask-worker-1 python /app/run_scraping.py
+WARN[0000] /home/apriansyah/kuliah/Semester 3/Komputasi Paralel dan Terdistribusi/Praktikum/Praktikum12/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+[+] Creating 1/1
+ ✔ Container dask-scheduler  Running                                                                0.0s 
++ '[' '' ']'
++ '[' '' == true ']'
++ CONDA_BIN=/opt/conda/bin/conda
++ '[' -e /opt/app/environment.yml ']'
++ echo 'no environment.yml'
+no environment.yml
++ '[' '' ']'
++ '[' '' ']'
++ exec python /app/run_scraping.py
+✅ Berhasil tersambung ke Dask Cluster yang sudah ada.
+Jumlah Worker di Cluster Utama: 3
+
+Memulai scraping untuk 200 URL...
+Target Waktu Serial Minimum (Estimasi): 200.00 detik
+Target Waktu Paralel Maksimum (Estimasi): 66.67 detik (dengan 3 worker)
+--------------------------------------------------
+Membagi tugas menjadi 100 partisi...
+⏳ Menunggu Dask Cluster menyelesaikan semua tugas scraping...
+
+==================================================
+✅ Scraping Selesai!
+⏰ Total Waktu Eksekusi (Paralel): 38.84 detik
+Total URL Diproses: 200
+Berhasil (SUCCESS): 150
+Gagal/Error: 50
+==================================================
+
+--- 5 Hasil Pertama ---
+{'url': 'https://www.google.com', 'status': 'SUCCESS', 'content_length': 19064, 'worker_pid': 24}
+{'url': 'https://www.bing.com', 'status': 'SUCCESS', 'content_length': 53667, 'worker_pid': 24}
+{'url': 'https://docs.dask.org', 'status': 'SUCCESS', 'content_length': 65876, 'worker_pid': 24}
+{'url': 'https://www.python.org', 'status': 'SUCCESS', 'content_length': 50114, 'worker_pid': 24}
+{'url': 'https://pypi.org', 'status': 'SUCCESS', 'content_length': 23208, 'worker_pid': 24}
+apriansyah@fedora:~/kuliah/Semester 3/Komputasi Paralel dan Terdistribusi/Praktikum/Praktikum12$ docker compose run --rm -v "$(pwd)":/app dask-worker-1 python /app/run_ml.py
+WARN[0000] /home/apriansyah/kuliah/Semester 3/Komputasi Paralel dan Terdistribusi/Praktikum/Praktikum12/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+[+] Creating 1/1
+ ✔ Container dask-scheduler  Running                                                                0.0s 
++ '[' '' ']'
++ '[' '' == true ']'
++ CONDA_BIN=/opt/conda/bin/conda
++ '[' -e /opt/app/environment.yml ']'
++ echo 'no environment.yml'
+no environment.yml
++ '[' '' ']'
++ '[' '' ']'
++ exec python /app/run_ml.py
+✅ Berhasil tersambung ke Dask Cluster!
+Info Cluster: <Client: 'tcp://172.23.0.2:8786' processes=3 threads=36, memory=46.25 GiB>
+
+⏰ Waktu untuk Pembuatan & Pembagian Data (Lazy): 0.2228 detik
+Ukuran Data: 1000000 baris, 20 fitur
+--------------------------------------------------
+⏳ Memulai pelatihan model...
+✅ Pelatihan model selesai!
+⏰ Waktu Eksekusi Pelatihan Model (model.fit()): 184.6851 detik
+--------------------------------------------------
+⏱️ Total Waktu (Pre-proses Lazy + Pelatihan): 184.9079 detik
+apriansyah@fedora:~/kuliah/Semester 3/Komputasi Paralel dan Terdistribusi/Praktikum/Praktikum12$ 
+
+
