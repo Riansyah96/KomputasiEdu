@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  # --- Dask Scheduler ---
+  dask-scheduler:
+    # Menggunakan 'build: .' untuk membuat image kustom dari Dockerfile
+    build: . 
+    command: dask scheduler
+    ports:
+      - "8786:8786"
+      - "8787:8787"  # Port Dashboard
+    container_name: dask-scheduler
+    hostname: dask-scheduler
+
+  # --- Dask Workers ---
+  dask-worker-1:
+    build: . 
+    # Sambungkan ke dask-scheduler menggunakan NAMA SERVICE-nya
+    command: dask worker tcp://dask-scheduler:8786
+    depends_on:
+      - dask-scheduler
+    container_name: dask-worker-1
+
+  dask-worker-2:
+    build: .
+    command: dask worker tcp://dask-scheduler:8786
+    depends_on:
+      - dask-scheduler
+    container_name: dask-worker-2
+
+  dask-worker-3:
+    build: .
+    command: dask worker tcp://dask-scheduler:8786
+    depends_on:
+      - dask-scheduler
+    container_name: dask-worker-3
