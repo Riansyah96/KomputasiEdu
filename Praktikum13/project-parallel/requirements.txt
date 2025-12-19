@@ -1,0 +1,5 @@
+rq
+redis
+requests
+beautifulsoup4
+rq-dashboard

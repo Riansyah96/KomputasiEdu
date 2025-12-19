@@ -1,0 +1,47 @@
+services:
+  redis-server:
+    image: redis:alpine
+    container_name: redis-server
+    networks:
+      - rq-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  dashboard:
+    build: .
+    container_name: rq-dashboard
+    ports:
+      - "9181:9181"
+    command: rq-dashboard --redis-url redis://redis-server:6379
+    depends_on:
+      redis-server:
+        condition: service_healthy
+    networks:
+      - rq-network
+
+  worker:
+    build: .
+    command: rq worker --url redis://redis-server:6379
+    depends_on:
+      redis-server:
+        condition: service_healthy
+    deploy:
+      replicas: 3
+    networks:
+      - rq-network
+
+  producer:
+    build: .
+    command: python producer.py
+    depends_on:
+      redis-server:
+        condition: service_healthy
+    networks:
+      - rq-network
+
+networks:
+  rq-network:
+    driver: bridge
